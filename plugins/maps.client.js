@@ -1,30 +1,31 @@
-export default function (context, inject) {
-  let mapLoaded = false;
-  let mapWaiting = null;
+export default function(context, inject) {
+  let mapLoaded = false
+  let mapWaiting = null
 
-  addScript();
-  inject('maps', { showMap });
+  addScript()
+  inject('maps', { showMap })
 
   function addScript() {
-    const script = document.createElement('script');
-    script.src = 'https://maps.googleapis.com/maps/api/js?key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&libraries=places&callback=initMap';
-    script.async = true;
-    window.initMap = initMap;
-    document.head.appendChild(script);
+    const script = document.createElement('script')
+    script.src =
+      'https://maps.googleapis.com/maps/api/js?key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&libraries=places&callback=initMap'
+    script.async = true
+    window.initMap = initMap
+    document.head.appendChild(script)
   }
 
   function initMap() {
-    mapLoaded = true;
+    mapLoaded = true
     if (mapWaiting) {
-      const { canvas, lat, lng } = mapWaiting;
-      renderMap(canvas, lat, lng);
-      mapWaiting = null;
+      const { canvas, lat, lng } = mapWaiting
+      renderMap(canvas, lat, lng)
+      mapWaiting = null
     }
   }
 
   function showMap(canvas, lat, lng) {
     if (mapLoaded) {
-      renderMap(canvas, lat, lng);
+      renderMap(canvas, lat, lng)
     } else {
       mapWaiting = { canvas, lat, lng }
     }
@@ -36,10 +37,10 @@ export default function (context, inject) {
       center: new window.google.maps.LatLng(lat, lng),
       disableDefaultUI: true,
       zoomControl: true,
-    };
+    }
     const map = new window.google.maps.Map(canvas, mapOptions)
-    const position = new window.google.maps.LatLng(lat, lng);
-    const marker = new window.google.maps.Marker({ position });
-    marker.setMap(map);
+    const position = new window.google.maps.LatLng(lat, lng)
+    const marker = new window.google.maps.Marker({ position })
+    marker.setMap(map)
   }
 }
